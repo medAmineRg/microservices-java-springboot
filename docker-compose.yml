@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+
+  ## postgres service
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_DB: student
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: justForWork
+      PGDATA: /data/postgres
+    volumes:
+      - ./postgres-student:/data/postgres
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+    ## Eureka service
+  discovery-service:
+    image: mohamed99amine/discovery-service:latest
+    container_name: eureka
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  ## gateway service
+  gateway-service:
+    image: mohamed99amine/gateway-service:latest
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+    depends_on:
+      - discovery-service
+    restart: unless-stopped
+
+  ## auth service
+  auth-service:
+    container_name: auth-service
+    image: mohamed99amine/auth-service:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-service
+      - gateway-service
+      - postgres
+
+  ## student service
+  student-service:
+    container_name: student-service
+    image: mohamed99amine/student-service:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-service
+      - gateway-service
+      - postgres
+      - auth-service
