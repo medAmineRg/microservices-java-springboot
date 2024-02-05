@@ -12,7 +12,7 @@ spring:
   datasource:
     url: jdbc:postgresql://postgres:5432/student
     username: "postgres"
-    password: "justForWork"
+    password: "password"
 
 eureka:
   client:
