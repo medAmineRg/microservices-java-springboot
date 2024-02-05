@@ -27,6 +27,8 @@ services:
       - "8761:8761"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - zipkin
 
   ## gateway service
   gateway-service:
@@ -41,6 +43,7 @@ services:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
     depends_on:
       - discovery-service
+      - zipkin
     restart: unless-stopped
 
   ## auth service
@@ -50,9 +53,17 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
-      - discovery-service
       - gateway-service
+      - discovery-service
       - postgres
+      - zipkin
+
+  ## zipkin
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
 
   ## student service
   student-service:
@@ -61,7 +72,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
-      - discovery-service
       - gateway-service
+      - discovery-service
       - postgres
       - auth-service
+      - zipkin

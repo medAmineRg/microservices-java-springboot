@@ -55,6 +55,7 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -85,7 +86,7 @@
                         <image>eclipse-temurin:17.0.4.1_1-jre</image>
                     </from>
                     <to>
-                        <image>registry.hub.docker.com/mohamed99amine/${artifactId}</image>
+                        <image>registry.hub.docker.com/mohamed99amine/${project.artifactId}</image>
                     </to>
                 </configuration>
             </plugin>

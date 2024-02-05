@@ -18,3 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
+
+
+### data ###
+./postgres-student

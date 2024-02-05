@@ -12,13 +12,17 @@ spring:
   datasource:
     url: jdbc:postgresql://postgres:5432/student
     username: "postgres"
-    password: "yourPassword"
+    password: "justForWork"
 
 eureka:
   client:
     service-url:
       defaultZone : http://eureka:8761/eureka/
 
-logging:
-  level:
-    org.springframework.web: info
+management:
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0

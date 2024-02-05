@@ -30,6 +30,12 @@ public class StudentController {
         return studentDTOList;
     }
 
+    @PostMapping
+    public StudentDTO postStudent(@Valid @RequestBody StudentDTO student) {
+        StudentDTO createdStudent = studentService.postStudent(student);
+        return createdStudent;
+    }
+
 
     @GetMapping("/{id}")
     public StudentDTO findStudentById(@PathVariable("id") Long id) throws NotFoundException {

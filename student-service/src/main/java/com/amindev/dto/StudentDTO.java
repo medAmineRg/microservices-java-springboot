@@ -17,5 +17,8 @@ public class StudentDTO {
     @Size(min = 3, max = 25,message = "Username must be at least 3 char")
     private String username;
     private String role;
+    private String password;
     private List<String> booksID = new ArrayList<>();
+    private List<Book> books = new ArrayList<>();
+
 }

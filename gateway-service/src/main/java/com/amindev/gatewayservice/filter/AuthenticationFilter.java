@@ -1,6 +1,7 @@
 package com.amindev.gatewayservice.filter;
 
 import com.amindev.gatewayservice.utils.JWTUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
 
     private final RouteValidator validator;
@@ -36,7 +38,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     jwtUtils.validateToken(authHeader);
 
                 } catch (Exception e) {
-                    System.out.println("token isn't valid!");
+                    log.error("token isn't valid!");
                     throw new RuntimeException("unauthorized access to application");
                 }
             }

@@ -9,6 +9,11 @@ spring:
           filters:
             - AuthenticationFilter
 
+        - id: BOOK-SERVICE
+          uri: lb://BOOK-SERVICE
+          predicates:
+            - Path=/book/**
+
         - id: AUTH-SERVICE
           uri: lb://AUTH-SERVICE
           predicates:
@@ -21,3 +26,11 @@ eureka:
   client:
     service-url:
       defaultZone : http://localhost:8761/eureka/
+
+management:
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411
+  tracing:
+    sampling:
+      probability: 1.0

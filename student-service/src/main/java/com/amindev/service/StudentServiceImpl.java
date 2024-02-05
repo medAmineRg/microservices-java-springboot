@@ -1,5 +1,7 @@
 package com.amindev.service;
 
+import com.amindev.client.BookClient;
+import com.amindev.dto.Book;
 import com.amindev.dto.StudentDTO;
 import com.amindev.entity.Student;
 import com.amindev.exception.NotFoundException;
@@ -10,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +20,7 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService{
     private static final StudentMapper studentMapper = Mappers.getMapper(StudentMapper.class);
     public final StudentRepository studentRepository;
+    public final BookClient bookClient;
 
     @Override
     public List<StudentDTO> findStudent() {
@@ -25,8 +29,11 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public StudentDTO findStudentById(Long id) throws NotFoundException {
-        Student foundStudent = studentRepository.findById(id).orElseThrow(() -> new NotFoundException("user not found with id: "+id));
-        return studentMapper.studentEntityToDTO(foundStudent);
+        StudentDTO foundStudent = studentMapper.studentEntityToDTO(studentRepository.findById(id).orElseThrow(() -> new NotFoundException("user not found with id: "+id)));
+        Book book = bookClient.getBookById(1L);
+        List<Book> arrayBook = new ArrayList(List.of(book));
+        foundStudent.setBooks(arrayBook);
+        return foundStudent;
     }
 
     @Override
